@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-@DefaultUrl("https://nishman89.github.io/flock/flocks.html")
+@DefaultUrl("http://127.0.0.1:8000/flock/flocks.html")
 public class FlocksPage extends PageObject {
 
     @FindBy(id = "search-input")

@@ -4,7 +4,7 @@ An automated UI test framework built for the Flock web application, developed by
 
 ## 1. Project Goal
 
-The primary goal of this project is to build an automated, maintainable end-to-end regression test suite for the Flock web application (https://nishman89.github.io/flock/login.html).
+The primary goal of this project is to build an automated, maintainable end-to-end regression test suite for the Flock web application (http://127.0.0.1:8000/flock/login.html).
 
 Key objectives:
 
@@ -26,7 +26,7 @@ Key objectives:
 | Build tool | Apache Maven | 3.8 or higher |
 | CI | GitHub Actions | - |
 | Version control | Git, GitHub, GitHub Desktop | - |
-| Target application | https://nishman89.github.io/flock/ | - |
+| Target application | http://127.0.0.1:8000/flock/ | - |
 
 ### Dependency notes
 

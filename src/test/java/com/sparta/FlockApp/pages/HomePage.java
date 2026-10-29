@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-@DefaultUrl("https://nishman89.github.io/flock/home.html")
+@DefaultUrl("http://127.0.0.1:8000/flock/home.html")
 public class HomePage extends PageObject {
 
     // ==========================================
@@ -28,7 +28,6 @@ public class HomePage extends PageObject {
     // ==========================================
     // Logout Button
     // ==========================================
-g
     // ==========================================
     // Search & Container Elements
     // ==========================================

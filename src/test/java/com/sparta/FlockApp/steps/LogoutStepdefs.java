@@ -25,6 +25,6 @@ public class LogoutStepdefs {
 
     @Then("I should be returned to the login page")
     public void I_should_be_returned_to_the_login_page() {
-        MatcherAssert.assertThat(logoutPage.getDriver().getCurrentUrl(), Matchers.is("https://nishman89.github.io/flock/login.html"));
+        MatcherAssert.assertThat(logoutPage.getDriver().getCurrentUrl(), Matchers.is("http://127.0.0.1:8000/flock/login.html"));
     }
 }

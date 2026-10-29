@@ -6,11 +6,11 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.JavascriptExecutor;
 
-@DefaultUrl("https://nishman89.github.io/flock/about.html")
+@DefaultUrl("http://127.0.0.1:8000/flock/about.html")
 public class AboutPage extends PageObject {
 
     private static final String BASE_URL =
-            "https://nishman89.github.io/flock/";
+            "http://127.0.0.1:8000/flock/";
 
     @FindBy(id = "login-about-link")
     private WebElementFacade loginAboutLink;
