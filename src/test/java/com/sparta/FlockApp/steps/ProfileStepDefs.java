@@ -165,7 +165,7 @@ public class ProfileStepDefs {
 
     @And("I should be on the login page")
     public void iShouldBeOnTheLoginPage() {
-        MatcherAssert.assertThat(profilePage.getDriver().getCurrentUrl(), Matchers.equalTo("https://nishman89.github.io/flock/login.html"));
+        MatcherAssert.assertThat(profilePage.getDriver().getCurrentUrl(), Matchers.equalTo("http://127.0.0.1:8000/flock/login.html"));
     }
 
     @And("I enter {string} and {string}")

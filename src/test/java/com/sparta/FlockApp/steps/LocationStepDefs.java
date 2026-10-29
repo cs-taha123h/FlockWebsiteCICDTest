@@ -24,7 +24,7 @@ public class LocationStepDefs {
         loginPage.enterAndSubmitFields("nish", "mandal");
 
         WebDriverWait wait = new WebDriverWait(loginPage.getDriver(), Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.urlToBe("https://nishman89.github.io/flock/home.html"));
+        wait.until(ExpectedConditions.urlToBe("http://127.0.0.1:8000/flock/home.html"));
         wait.until(ExpectedConditions.elementToBeClickable(By.id("location-btn")));
     }
 

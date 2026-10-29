@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@DefaultUrl("https://nishman89.github.io/flock/profile.html")
+@DefaultUrl("http://127.0.0.1:8000/flock/profile.html")
 public class ProfilePage extends PageObject {
 
     @FindBy(className = "profile-name")

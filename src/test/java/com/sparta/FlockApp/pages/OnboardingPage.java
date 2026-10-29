@@ -8,7 +8,7 @@ import net.thucydides.core.pages.PageObject;
 
 import java.util.List;
 
-@DefaultUrl("https://nishman89.github.io/flock/onboarding.html")
+@DefaultUrl("http://127.0.0.1:8000/flock/onboarding.html")
 public class OnboardingPage extends PageObject {
 
     @FindBy(id = "next-btn")

@@ -1,0 +1,104 @@
+'use strict';
+
+function initDesktop() {
+  if (window.innerWidth < 768) return;
+
+  const shell = document.querySelector('.app-shell');
+  if (!shell || shell.dataset.desktop) return;
+  shell.dataset.desktop = '1';
+
+  const page = location.pathname.split('/').pop() || 'home.html';
+
+  const svgs = {
+    flocks:    '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    events:    '<path d="M12 2C8 2 4 5 4 9c0 3 2 5.5 5 6.5V18h6v-2.5c3-1 5-3.5 5-6.5 0-4-4-7-8-7z"/><path d="M9 18h6"/><path d="M10 21h4"/>',
+    myflocks:  '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    myevents:  '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+    profile:   '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+    logout:    '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+    about:     '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    chats:     '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  };
+
+  function icon(paths) {
+    return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+  }
+
+  function navLink(href, id, label, svgPaths) {
+    // event.html is a detail page  -  highlight Discover
+    const pageMap = { 'event.html': 'home.html', 'flocks.html': 'flocks.html' };
+    const effectivePage = pageMap[page] || page;
+    const active = effectivePage === href ? 'active' : '';
+    return `<a id="sidebar-nav-${id}" class="sb-link ${active}" href="${href}">${icon(svgPaths)}<span>${label}</span></a>`;
+  }
+
+  const birdSVG = `<svg width="24" height="19" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/>
+  <path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/>
+  <path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/>
+</svg>`;
+
+  const sidebar = document.createElement('aside');
+  sidebar.className = 'sb';
+  sidebar.innerHTML = `
+    <a class="sb-logo" href="home.html">
+      <div class="sb-logo-icon">${birdSVG}</div>
+      <span class="sb-brand">Flock</span>
+    </a>
+    <nav class="sb-nav">
+      ${navLink('home.html',       'home',      'Roosts',    svgs.events)}
+      ${navLink('flocks.html',     'flocks',    'Flocks',    svgs.flocks)}
+      ${navLink('my-flocks.html',  'my-flocks', 'My Flocks', svgs.myflocks)}
+      ${navLink('my-roosts.html',  'my-roosts', 'My Roosts', svgs.myevents)}
+      ${navLink('profile.html',    'profile',   'Profile',   svgs.profile)}
+      ${navLink('about.html',      'about',     'About',     svgs.about)}
+      <button id="sidebar-nav-chats" class="sb-link" onclick="showSidebarChatsPopup()" style="background:none;border:none;cursor:pointer;width:100%;text-align:left">${icon(svgs.chats)}<span>Chats</span></button>
+    </nav>
+    <div class="sb-foot">
+      <button id="sidebar-signout-btn" class="sb-logout" onclick="Flock.logout()">
+        ${icon(svgs.logout)} Sign Out
+      </button>
+    </div>`;
+
+  /* Wrap existing shell children in .page-main */
+  const main = document.createElement('div');
+  main.className = 'page-main';
+  while (shell.firstChild) main.appendChild(shell.firstChild);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'page-wrap';
+  wrap.appendChild(sidebar);
+  wrap.appendChild(main);
+  shell.appendChild(wrap);
+}
+
+/* Run after all other scripts */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDesktop);
+} else {
+  initDesktop();
+}
+
+function showSidebarChatsPopup() {
+  let ov = document.getElementById('sidebar-chats-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'sidebar-chats-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px';
+    ov.innerHTML = `
+      <div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:300px;width:100%;text-align:center">
+        <div style="font-size:36px;margin-bottom:12px">💬</div>
+        <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:18px;font-weight:700;color:#1C0A00;margin-bottom:8px">Chats</div>
+        <div style="font-size:14px;color:#6B3A1F;line-height:1.5;margin-bottom:20px">
+          Not yet implemented - the Chats feature is coming soon. You'll be able to message other attendees before and after events.
+        </div>
+        <button onclick="document.getElementById('sidebar-chats-overlay').remove()"
+          id="sidebar-chats-close-btn"
+          style="padding:11px 0;width:100%;background:#F97316;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">
+          Got it
+        </button>
+      </div>`;
+    ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+    document.body.appendChild(ov);
+  }
+}

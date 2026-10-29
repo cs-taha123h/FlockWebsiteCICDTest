@@ -45,7 +45,7 @@ public class LoginStepDefs {
 
     @Then("I should be redirected to the home page")
     public void iShouldBeRedirectedToTheHomePage() {
-        MatcherAssert.assertThat(loginPage.getDriver().getCurrentUrl(), Matchers.is("https://nishman89.github.io/flock/home.html"));
+        MatcherAssert.assertThat(loginPage.getDriver().getCurrentUrl(), Matchers.is("http://127.0.0.1:8000/flock/home.html"));
     }
 
     @When("I enter a valid email but the password is {string}")
@@ -60,7 +60,7 @@ public class LoginStepDefs {
 
     @And("I should remain on the login page")
     public void iShouldRemainOnTheLoginPage() {
-        MatcherAssert.assertThat(loginPage.getDriver().getCurrentUrl(), Matchers.is("https://nishman89.github.io/flock/login.html"));
+        MatcherAssert.assertThat(loginPage.getDriver().getCurrentUrl(), Matchers.is("http://127.0.0.1:8000/flock/login.html"));
     }
 
     @When("I enter a empty email")

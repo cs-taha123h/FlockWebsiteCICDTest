@@ -31,7 +31,7 @@ public class AboutStepDefs {
         MatcherAssert.assertThat(
                 loginPage.getDriver().getCurrentUrl(),
                 Matchers.is(
-                        "https://nishman89.github.io/flock/home.html"
+                        "http://127.0.0.1:8000/flock/home.html"
                 )
         );
     }

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F97316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Flock">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
+  <title>Flock - Roosts</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+<div class="app-shell" id="home-shell">
+
+  <header class="app-header">
+    <a class="header-logo" href="home.html">
+      <div class="header-logo-icon">
+        <svg width="24" height="19" viewBox="0 0 36 28" fill="none"><path d="M2 25 Q9 12 18 18 Q27 12 34 25 L18 17 Z" fill="white"/><path d="M0 15 Q6 5 13 10 Q20 5 26 15 L13 9 Z" fill="white"/><path d="M18 8 Q22 2 27 5 Q32 2 36 8 L27 4.5 Z" fill="white"/></svg>
+      </div>
+      <span class="header-brand">Flock</span>
+    </a>
+    <div id="greeting-text" style="font-size:13px;color:var(--text3);font-weight:600"></div>
+  </header>
+
+  <!-- City + sort filters -->
+  <div class="filter-bar">
+    <div class="filter-select-wrap" style="flex:1.2">
+      <select class="filter-select" id="city-filter" name="city-filter" onchange="applyFilters()"></select>
+    </div>
+    <div class="sort-wrap">
+      <select class="sort-select" id="sort-filter" onchange="applyFilters()">
+        <option value="date">Soonest</option>
+        <option value="going">Popular</option>
+        <option value="spots">Spots left</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Search + location -->
+  <div class="search-bar">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="search-input" type="search" placeholder="Search Roosts, venues, Flocks..." oninput="applySearch(this)">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+    <button class="location-btn" id="location-btn" onclick="useMyLocation()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+      <span id="location-btn-text">Use my location</span>
+    </button>
+  </div>
+
+  <!-- Category chips -->
+  <div class="cat-scroll" id="cat-scroll">
+    <div class="cat-chip active" data-cat="All"          onclick="setCat('All',this)">🌟 All</div>
+    <div class="cat-chip"        data-cat="Sports"       onclick="setCat('Sports',this)">⚽ Sports</div>
+    <div class="cat-chip"        data-cat="Food & Drink" onclick="setCat('Food & Drink',this)">🍛 Food & Drink</div>
+    <div class="cat-chip"        data-cat="Gaming"       onclick="setCat('Gaming',this)">🎮 Gaming</div>
+    <div class="cat-chip"        data-cat="Fitness"      onclick="setCat('Fitness',this)">🏋️ Fitness</div>
+    <div class="cat-chip"        data-cat="Social"       onclick="setCat('Social',this)">🍺 Social</div>
+    <div class="cat-chip"        data-cat="Wellness"     onclick="setCat('Wellness',this)">🧘 Wellness</div>
+    <div class="cat-chip"        data-cat="Outdoors"     onclick="setCat('Outdoors',this)">🥾 Outdoors</div>
+    <div class="cat-chip"        data-cat="Music"        onclick="setCat('Music',this)">🎵 Music</div>
+    <div class="cat-chip"        data-cat="Arts"         onclick="setCat('Arts',this)">🎬 Arts</div>
+  </div>
+
+  <div class="content">
+    <div class="events-list" id="events-container"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="nav-item" id="nav-roosts" data-page="home" href="home.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 2 4 5 4 9c0 3 2 5.5 5 6.5V18h6v-2.5c3-1 5-3.5 5-6.5 0-4-4-7-8-7z"/><path d="M9 18h6"/><path d="M10 21h4"/></svg>
+      <span>Roosts</span>
+    </a>
+    <a class="nav-item" id="nav-flocks" data-page="flocks" href="flocks.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Flocks</span>
+    </a>
+    <a class="nav-item" id="nav-my-flocks" data-page="my-flocks" href="my-flocks.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>My Flocks</span>
+    </a>
+    <a class="nav-item" id="nav-my-roosts" data-page="my-roosts" href="my-roosts.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      <span>My Roosts</span>
+    </a>
+    <a class="nav-item" id="nav-profile" data-page="profile" href="profile.html">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/pages/home.js"></script>
+<script src="js/desktop-sidebar.js"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+</body>
+</html>
